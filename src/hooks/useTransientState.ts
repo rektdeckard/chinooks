@@ -4,7 +4,7 @@ import { useTimeoutFunction } from "./useTimeoutFunction";
 /**
  * A state hook for conveniently and temporarily transitioning to a transient
  * state before returning to a base state.
- * 
+ *
  * @param baseState default state value, returns to this value after timeout
  * @param ms delay in milliseconds after transition before returning to `baseState`
  * @returns a tuple of value and dispatch, compare to `useState`

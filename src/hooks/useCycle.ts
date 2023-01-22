@@ -1,4 +1,5 @@
 import { useCallback, useRef, useState } from "react";
+import { Wrapping } from "../utils";
 
 /**
  * A state hook that can transition between a list of possible states
@@ -11,15 +12,15 @@ export const useCycle = <T>(
   values: Iterable<T>,
   startIndex?: number
 ): [T, (idx?: number) => void] => {
-  const index = useRef<number>(startIndex ?? 0);
-  const [value, setValue] = useState<T>([...values][index.current]);
+  const index = useRef<Wrapping>(
+    new Wrapping({ max: [...values].length - 1 }, startIndex ?? 0)
+  );
+  const [value, setValue] = useState<T>([...values][index.current.value]);
 
   const cycle = useCallback(
-    (idx?: number) => {
+    (step?: number) => {
       const arr = [...values];
-      index.current =
-        typeof idx !== "number" ? (index.current + 1) % arr.length : idx;
-      setValue(arr[index.current]);
+      setValue(arr[index.current.add(step ?? 1).value]);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [...values]
@@ -40,18 +41,15 @@ export const useCycle = <T>(
 export const useCycleStable = <T>(
   values: Iterable<T>,
   startIndex?: number
-): [T, (steps?: number) => void] => {
+): [T, (step?: number) => void] => {
   const valuesRef = useRef<T[]>(Array.isArray(values) ? values : [...values]);
-  const [index, setIndex] = useState<number>(startIndex ?? 0);
+  const [index, setIndex] = useState<Wrapping>(
+    new Wrapping({ max: valuesRef.current.length - 1 }, startIndex ?? 0)
+  );
 
   const cycle = useCallback((steps?: number) => {
-    setIndex(
-      (idx) =>
-        (steps ? idx + steps + valuesRef.current.length : idx + 1) %
-        valuesRef.current.length
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setIndex((idx) => Wrapping.from(idx).add(steps ?? 1));
   }, []);
 
-  return [valuesRef.current[index], cycle];
+  return [valuesRef.current[index.value], cycle];
 };

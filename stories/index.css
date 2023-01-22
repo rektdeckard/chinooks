@@ -1,0 +1,92 @@
+body {
+  font-size: 1.2em;
+}
+
+main {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+textarea {
+  width: 256px;
+  height: 128px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 200px);
+  grid-gap: 16px;
+}
+
+.box {
+  width: 200px;
+  height: 200px;
+  display: grid;
+  place-items: center;
+  font-family: monospace;
+  background-color: bisque;
+  font-weight: 500;
+}
+
+.draggable {
+  overflow: auto;
+  cursor: grab;
+}
+
+.draggable:active {
+  cursor: grabbing;
+}
+
+.crimson {
+  background-color: crimson;
+}
+
+.cornflower {
+  background-color: cadetblue;
+}
+
+.darkmagenta {
+  background-color: darkmagenta;
+}
+
+.darkorange {
+  background-color: darkorange;
+}
+
+.big-text {
+  font-size: 64px;
+}
+
+.white-text {
+  color: white;
+}
+
+body {
+  --squircle-smooth: 0.6;
+  --squircle-radius: 16px;
+  --squircle-outline: 0px;
+  --squircle-corners: all;
+}
+
+.bouncy {
+  transition: --squircle-radius 200ms ease;
+}
+
+.bouncy:hover {
+  --squircle-radius: 100px;
+}
+
+@supports not ((mask-image: paint(id)) or (-webkit-mask-image: paint(id))) {
+  .squircle {
+    border-radius: 16px;
+  }
+}
+
+@supports ((mask-image: paint(id)) or (-webkit-mask-image: paint(id))) {
+  .squircle {
+    -webkit-mask-image: paint(squircle);
+    mask-image: paint(squircle);
+  }
+}
