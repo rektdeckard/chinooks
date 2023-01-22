@@ -1,15 +1,16 @@
 {
-  "include": ["src"],
+  "include": ["src", "stories"],
   "compilerOptions": {
     "module": "ESNext",
     "lib": ["ESNext", "DOM"],
     "target": "ESNext",
     "declaration": true,
     "sourceMap": true,
-    "rootDir": "./src",
+    "rootDir": ".",
     "moduleResolution": "node",
     "outDir": "dist/",
     "strict": true,
+    "jsx": "react-jsx",
     "allowSyntheticDefaultImports": true,
     "emitDeclarationOnly": true,
     "esModuleInterop": true,
