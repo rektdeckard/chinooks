@@ -5,6 +5,21 @@ export type WrappingOptions = {
   min?: number;
 };
 
+/**
+ * A wrapping integer class implementing {@link Number}, allowing a value
+ * to be constrained to an arbitrary range, and wrapping around the range
+ * when arithmetic operations cause it to overflow or underflow.
+ *
+ * @example
+ * const u16 = new Wrapping({ max: 0xFFFF }, 1);
+ * u16.add(0xFFFD); // 0xFFFE
+ * u16.add(1);      // 0xFFFF
+ * u16.add(1);      // 0x0000
+ * u16.add(1);      // 0x0001
+ *
+ * @throws {@link RangeError} when range or value is invalid, or when
+ * arguments to arithmetic methods are non-integers.
+ */
 export class Wrapping implements Number {
   #max: number;
   #min: number;
@@ -14,9 +29,9 @@ export class Wrapping implements Number {
     if (
       !Number.isSafeInteger(min) ||
       !Number.isSafeInteger(max) ||
-      (value && !Number.isSafeInteger(value))
+      (typeof value !== "undefined" && !Number.isSafeInteger(value))
     ) {
-      throw new RangeError("Wrapping values must be safe integers");
+      throw new RangeError("Values must be safe integers");
     }
 
     assertValidRange(min, max, value);
@@ -129,5 +144,30 @@ export class Wrapping implements Number {
 
   toPrecision(precision?: number | undefined): string {
     return this.#value.toPrecision(precision);
+  }
+
+  toString(radix?: number | undefined): string {
+    return this.#value.toString(radix);
+  }
+
+  toLocaleString(locales?: unknown, options?: unknown): string;
+  toLocaleString(
+    locales?: Intl.LocalesArgument,
+    options?: Intl.NumberFormatOptions | undefined
+  ): string;
+  toLocaleString(
+    locales?: string | string[] | undefined,
+    options?: Intl.NumberFormatOptions | undefined
+  ): string {
+    return this.#value.toLocaleString(locales, options);
+  }
+
+  [Symbol.toPrimitive](hint: string) {
+    if (hint === "string") return this.toString();
+    return this.#value;
+  }
+
+  get [Symbol.toStringTag]() {
+    return "Wrapping";
   }
 }

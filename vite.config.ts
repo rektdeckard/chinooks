@@ -8,5 +8,14 @@ export default defineConfig({
       name: "Slimjim",
       fileName: "index",
     },
+    rollupOptions: {
+      external: ["react", "react-dom"],
+      output: {
+        globals: {
+          react: "React",
+          "react-dom": "ReactDOM",
+        },
+      },
+    },
   },
 });

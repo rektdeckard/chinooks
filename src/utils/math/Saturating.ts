@@ -6,6 +6,22 @@ export type SaturatingOptions = {
   min?: number;
 };
 
+/**
+ * A saturating (or clamping) integer class implementing {@link Number},
+ * allowing a value to be constrained to an arbitrary range, and clamping
+ * it to the bounds when arithmetic operations would cause it to overflow or
+ * underflow.
+ *
+ * @example
+ * const level = new Saturating({ min: 1, max: 99 });
+ * level.add(50); // 51
+ * level.add(30); // 81
+ * level.add(30); // 99
+ *
+ * @throws {@link RangeError} when range or value is invalid, or when
+ * arguments to arithmetic methods are non-integers.
+ * @throws {@link Error} when attemping to `div()` by zero.
+ */
 export class Saturating implements Number {
   #max: number;
   #min: number;
@@ -13,9 +29,9 @@ export class Saturating implements Number {
 
   constructor({ max, min = 0 }: SaturatingOptions, value?: number) {
     if (
-      !Number.isInteger(min) ||
-      !Number.isInteger(max) ||
-      (value && !Number.isInteger(value))
+      !Number.isSafeInteger(min) ||
+      !Number.isSafeInteger(max) ||
+      (typeof value !== "undefined" && !Number.isSafeInteger(value))
     ) {
       throw new RangeError("Values must be integers");
     }
@@ -37,7 +53,7 @@ export class Saturating implements Number {
   add<N extends Number>(n: N) {
     const addend = typeof n === "number" ? n : Number(n);
 
-    if (!Number.isInteger(addend)) {
+    if (!Number.isSafeInteger(addend)) {
       throw new RangeError("Values must be integers");
     }
 
@@ -101,5 +117,30 @@ export class Saturating implements Number {
 
   toPrecision(precision?: number | undefined): string {
     return this.#value.toPrecision(precision);
+  }
+
+  toString(radix?: number | undefined): string {
+    return this.#value.toString(radix);
+  }
+
+  toLocaleString(locales?: unknown, options?: unknown): string;
+  toLocaleString(
+    locales?: Intl.LocalesArgument,
+    options?: Intl.NumberFormatOptions | undefined
+  ): string;
+  toLocaleString(
+    locales?: string | string[] | undefined,
+    options?: Intl.NumberFormatOptions | undefined
+  ): string {
+    return this.#value.toLocaleString(locales, options);
+  }
+
+  [Symbol.toPrimitive](hint: string) {
+    if (hint === "string") return this.toString();
+    return this.#value;
+  }
+
+  get [Symbol.toStringTag]() {
+    return "Saturating";
   }
 }

@@ -13,6 +13,12 @@ export type UseDragScrollReturn<E extends HTMLElement> = {
   onPointerLeave: PointerEventHandler<E>;
 };
 
+/**
+ * Add vertical and horizontal scrolling via click and drag or pointer events
+ * to arbitrary scrolling elements.
+ *
+ * @returns a `dragProps` object that can be spread onto any HTML element's JSX.
+ */
 export const useDragScroll = <
   E extends HTMLElement = HTMLElement
 >(): UseDragScrollReturn<E> => {

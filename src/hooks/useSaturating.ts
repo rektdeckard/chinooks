@@ -1,13 +1,13 @@
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 import { Saturating, SaturatingOptions } from "../utils";
 import { useRerender } from "./useRerender";
 
-export type UseSaturatingIntegerProps = SaturatingOptions & {
+export type UseSaturatingProps = SaturatingOptions & {
   initial?: number;
 };
 
-export type UseSaturatingIntegerReturn<N extends Number> = {
+export type UseSaturatingReturn<N extends Number> = {
   value: number;
   min: number;
   max: number;
@@ -17,12 +17,25 @@ export type UseSaturatingIntegerReturn<N extends Number> = {
   div: (divisor: N) => void;
 };
 
-export const useSaturatingInteger = <N extends Number>({
+/**
+ * A state hook exposing a saturating (or clamping) integer of arbitrary range.
+ * The counter is reset to `initial` when any of the options change.
+ *
+ * @param options an object with `min`, `max`, and `initial` values.
+ * @returns an object with the current `value`, `min`, and `max`, as well as
+ * `add(n)`, `sub(n)`, `mul(n)`, and `div(n)` functions that update the value.
+ * @see {@link Saturating} for more information.
+ */
+export const useSaturating = <N extends Number>({
   initial,
-  ...wrappingOptions
-}: UseSaturatingIntegerProps): UseSaturatingIntegerReturn<N> => {
+  ...options
+}: UseSaturatingProps): UseSaturatingReturn<N> => {
   const rerender = useRerender();
-  const internal = useRef<Saturating>(new Saturating(wrappingOptions, initial));
+  const internal = useRef<Saturating>(new Saturating(options, initial));
+
+  useEffect(() => {
+    internal.current = new Saturating(options, initial);
+  }, [options.min, options.max, initial]);
 
   const methods = useMemo(
     () => ({

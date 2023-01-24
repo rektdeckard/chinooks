@@ -1,17 +1,8 @@
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-// import {
-//   Title,
-//   Subtitle,
-//   Description,
-//   Primary,
-//   ArgsTable,
-//   Stories,
-//   PRIMARY_STORY,
-// } from "@storybook/addon-docs";
 
-import "./index.css";
 import { useCycleStable } from "../src";
+import "./index.css";
 
 type Props<T extends ReactNode> = {
   values: Iterable<T>;

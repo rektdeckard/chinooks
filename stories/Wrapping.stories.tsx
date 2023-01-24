@@ -1,17 +1,8 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-// import {
-//   Title,
-//   Subtitle,
-//   Description,
-//   Primary,
-//   ArgsTable,
-//   Stories,
-//   PRIMARY_STORY,
-// } from "@storybook/addon-docs";
 
-import "./index.css";
 import { Wrapping, WrappingOptions } from "../src";
+import "./index.css";
 
 type Props = {
   options: WrappingOptions;

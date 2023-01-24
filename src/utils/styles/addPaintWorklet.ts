@@ -1,5 +1,5 @@
 /**
- * Asynchronously loads and registers a CSS Paint Worklet module from text source
+ * Asynchronously load and register a CSS Paint Worklet module from text source
  *
  * @param src a string containing the source code of a paint worklet
  */

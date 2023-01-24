@@ -8,7 +8,7 @@ import { EffectCallback, useEffect } from "react";
  * Unlike `useEffect`, async callbacks can be passed directly without wrapping,
  * provided they return `Promise<void>`.
  *
- * @param effect is only run once, so closure dependencies are irrelevant
+ * @param effect is only run once, so closure dependencies are irrelevant.
  */
 export const useEffectOnce = (
   effect: EffectCallback | (() => Promise<void>)

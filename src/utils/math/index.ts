@@ -1,4 +1,4 @@
 export * from "./assertions";
-export * from "./saturating";
+export * from "./Saturating";
 export * from "./transforms";
-export * from "./wrapping";
+export * from "./Wrapping";

@@ -1,29 +1,16 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-// import {
-//   Title,
-//   Subtitle,
-//   Description,
-//   Primary,
-//   ArgsTable,
-//   Stories,
-//   PRIMARY_STORY,
-// } from "@storybook/addon-docs";
 
+import { useWrapping, UseWrappingProps } from "../src";
 import "./index.css";
-import { useWrappingInteger } from "../src";
 
-const UseWrappingInteger = () => {
-  const { value, add, sub } = useWrappingInteger({
-    min: -5,
-    max: 5,
-    initial: 0,
-  });
+const UseWrapping = (props: UseWrappingProps) => {
+  const { value, add, sub } = useWrapping(props);
   const [amount, setAmount] = useState<number>(1);
 
   return (
     <div>
-      <pre>{`const { value, add, sub } = useWrappingInteger({ min: -5, max: 5, initial: 0 })`}</pre>
+      <pre>{`const { value, add, sub } = useWrapping({ min:  ${props.min}, max: ${props.max}, initial: ${props.initial} })`}</pre>
       <hr />
       <pre>value: {value}</pre>
       <button onClick={() => sub(amount)}>sub({amount})</button>
@@ -38,8 +25,8 @@ const UseWrappingInteger = () => {
 };
 
 export default {
-  title: "Hooks/useWrappingInteger",
-  component: UseWrappingInteger,
+  title: "Hooks/useWrapping",
+  component: UseWrapping,
   argTypes: {
     min: {
       description: "Minimum value for wrapping integer",
@@ -63,10 +50,10 @@ export default {
       },
     },
   },
-} as ComponentMeta<typeof UseWrappingInteger>;
+} as ComponentMeta<typeof UseWrapping>;
 
-const Template: ComponentStory<typeof UseWrappingInteger> = () => (
-  <UseWrappingInteger />
+const Template: ComponentStory<typeof UseWrapping> = (props) => (
+  <UseWrapping {...props} />
 );
 
 export const Basic = Template.bind({});

@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Wrapping } from "../utils";
 import { useRerender } from "./useRerender";
@@ -6,8 +6,8 @@ import { useRerender } from "./useRerender";
 /**
  * A state hook that can transition between a list of possible states
  *
- * @param values an iterable (Array, Map, Set) list of values
- * @param startIndex an optional index of the starting value (defaults to 0)
+ * @param values an iterable list of values
+ * @param startIndex an optional index of the starting value (default 0)
  * @returns a tuple of current value and step function, to step n steps (wrapping) through values
  */
 export const useCycle = <T>(
@@ -19,14 +19,23 @@ export const useCycle = <T>(
   );
   const [value, setValue] = useState<T>([...values][index.current.value]);
 
+  useEffect(() => {
+    const arr = [...values];
+    if (arr.length - 1 !== index.current.max) {
+      index.current = new Wrapping({ max: arr.length - 1 }, startIndex ?? 0);
+      setValue(arr[index.current.value]);
+    }
+  }, [values]);
+
   const cycle = useCallback(
     (step?: number) => {
       const arr = [...values];
       setValue(arr[index.current.add(step ?? 1).value]);
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [...values]
+    [values]
   );
+
+  console.log(index.current.value);
 
   return [value, cycle];
 };
@@ -36,8 +45,8 @@ export const useCycle = <T>(
  * Like `useCycle`, but more performant and guarantees a stable function reference
  * for the lifetime of the hook. Only safe when the cycle options do not change.
  *
- * @param values an iterable (Array, Map, Set) list of values
- * @param startIndex an optional index of the starting value (defaults to 0)
+ * @param values an iterable list of values
+ * @param startIndex an optional index of the starting value (default 0)
  * @returns a tuple of current value and step function, to step n steps (wrapping) through values
  */
 export const useCycleStable = <T>(
