@@ -1,5 +1,5 @@
 import { assertValidRange, castInteger } from "./assertions";
-import { clamp } from "./transforms";
+import { uncheckedClamp } from "./transforms";
 
 export type SaturatingOptions = {
   max: number;
@@ -12,7 +12,11 @@ export class Saturating implements Number {
   #value: number;
 
   constructor({ max, min = 0 }: SaturatingOptions, value?: number) {
-    if (!Number.isInteger(min) || !Number.isInteger(max)) {
+    if (
+      !Number.isInteger(min) ||
+      !Number.isInteger(max) ||
+      (value && !Number.isInteger(value))
+    ) {
       throw new RangeError("Values must be integers");
     }
 
@@ -39,7 +43,7 @@ export class Saturating implements Number {
 
     if (addend === 0) return this;
 
-    this.#value = clamp(this.#min, this.#max, this.#value + addend);
+    this.#value = uncheckedClamp(this.#min, this.#max, this.#value + addend);
     return this;
   }
 
@@ -51,7 +55,11 @@ export class Saturating implements Number {
     const multiplier = castInteger(n);
     if (multiplier === 1) return this;
 
-    this.#value = clamp(this.#min, this.#max, this.#value * multiplier);
+    this.#value = uncheckedClamp(
+      this.#min,
+      this.#max,
+      this.#value * multiplier
+    );
     return this;
   }
 
@@ -59,7 +67,7 @@ export class Saturating implements Number {
     const divisor = castInteger(n);
     if (divisor === 0) throw new Error("Cannot divide by zero");
 
-    this.#value = clamp(
+    this.#value = uncheckedClamp(
       this.#min,
       this.#max,
       Math.trunc(this.#value / divisor)

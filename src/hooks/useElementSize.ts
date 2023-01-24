@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+
 import { noOp } from "../utils";
 
 export const useElementSize = <E extends Element = Element>(

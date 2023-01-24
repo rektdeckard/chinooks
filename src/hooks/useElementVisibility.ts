@@ -1,4 +1,5 @@
 import { useState, useRef, RefObject, MutableRefObject } from "react";
+
 import { useEffectOnce } from "./useEffectOnce";
 
 export type ElementVisibility<E extends Element> = {

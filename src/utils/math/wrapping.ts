@@ -11,7 +11,11 @@ export class Wrapping implements Number {
   #value: number;
 
   constructor({ max, min = 0 }: WrappingOptions, value?: number) {
-    if (!Number.isSafeInteger(min) || !Number.isSafeInteger(max)) {
+    if (
+      !Number.isSafeInteger(min) ||
+      !Number.isSafeInteger(max) ||
+      (value && !Number.isSafeInteger(value))
+    ) {
       throw new RangeError("Wrapping values must be safe integers");
     }
 

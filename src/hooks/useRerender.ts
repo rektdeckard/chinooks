@@ -9,6 +9,5 @@ const renderReducer = (n: number): number => (n + 1) % 1_000_000;
  */
 export const useRerender = (): (() => void) => {
   const [, rerender] = useReducer(renderReducer, 0);
-
   return rerender;
 };
