@@ -1,8 +1,8 @@
 {
-  "name": "slimjim",
-  "version": "0.1.0",
+  "name": "chinooks",
+  "version": "0.1.1",
   "description": "React hooks and utilities",
-  "repository": "https://github.com/rektdeckard/slimjim.git",
+  "repository": "https://github.com/rektdeckard/chinooks.git",
   "author": {
     "name": "Tobias Fried",
     "email": "friedtm@gmail.com",
@@ -18,7 +18,7 @@
       "require": "./dist/index.umd.js"
     }
   },
-  "types": "./dist/index.d.ts",
+  "types": "./dist/src/index.d.ts",
   "keywords": [
     "react",
     "hooks",
@@ -58,5 +58,7 @@
     "react": "^16.8.0  || ^17.0.0 || ^18.0.0",
     "react-dom": "^16.8.0  || ^17.0.0 || ^18.0.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "kdim": "^0.2.5"
+  }
 }

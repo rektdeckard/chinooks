@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useRef } from "react";
+import { Saturating, BoundedOptions } from "kdim";
 
-import { Saturating, SaturatingOptions } from "../utils";
 import { useRerender } from "./useRerender";
 
-export type UseSaturatingProps = SaturatingOptions & {
+export type UseSaturatingProps = BoundedOptions & {
   initial?: number;
 };
 

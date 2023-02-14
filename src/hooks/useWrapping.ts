@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useRef } from "react";
+import { Wrapping, BoundedOptions } from "kdim";
 
-import { Wrapping, WrappingOptions } from "../utils";
 import { useRerender } from "./useRerender";
 
-export type UseWrappingProps = WrappingOptions & {
+export type UseWrappingProps = BoundedOptions & {
   initial?: number;
 };
 

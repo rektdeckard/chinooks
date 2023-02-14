@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { Wrapping } from "kdim";
 
-import { Wrapping } from "../utils";
 import { useRerender } from "./useRerender";
 
 /**
